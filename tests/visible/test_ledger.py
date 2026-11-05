@@ -53,3 +53,21 @@ def test_different_transfer_ids_both_apply():
 
     assert second["accounts"] == {"alice": 500, "bob": 1000}
     assert set(second["processed"]) == {"t1", "t2"}
+
+
+# Original attempt
+# def test_overdraft_leaves_balances_unchanged():
+#     accounts = {"alice": 500, "bob": 100}
+#
+#     result = transfer(accounts, "alice", "bob", 501, transfer_id="t1")
+#
+#     assert result["accounts"] == {"alice": 500, "bob": 100}
+
+
+def test_overdraft_leaves_balances_unchanged():
+    accounts = {"alice": 500, "bob": 100}
+
+    with pytest.raises(InsufficientFundsError):
+        transfer(accounts, "alice", "bob", 501, transfer_id="t1")
+
+    assert accounts == {"alice": 500, "bob": 100}
