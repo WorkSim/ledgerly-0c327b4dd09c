@@ -29,8 +29,10 @@ def to_cents(amount: str | Decimal) -> int:
             `str`/`Decimal`) — floats are rejected rather than silently
             losing precision.
     """
-    return int(float(amount) * 100)
+    if not isinstance(amount, (str, Decimal)):
+        raise TypeError("amount must be a string or Decimal")
 
+    return int(Decimal(amount) * 100)
 
 def from_cents(cents: int) -> str:
     """Format an integer number of cents back into a `"D.DD"` dollar string.
