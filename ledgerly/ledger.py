@@ -62,6 +62,9 @@ def transfer(
     if to_id not in accounts:
         raise KeyError(f"unknown destination account: {to_id!r}")
 
+    if transfer_id in processed:
+        return {"accounts": accounts, "processed": processed}
+
     if amount_cents > accounts[from_id]:
         raise InsufficientFundsError
     accounts[from_id] -= amount_cents
